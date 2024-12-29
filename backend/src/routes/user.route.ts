@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, verify } from "hono/jwt";
+import { UserSigninDTO, userSigninZod, userSignupZod, UserSingupDTO } from "@jatan_dudeja/medium-clone";
 
 const app = new Hono<{
   Bindings: {
@@ -14,7 +15,15 @@ const app = new Hono<{
 }>();
 
 app.post("/login", async (c) => {
-  const body = await c.req.json();
+  const body: UserSigninDTO = await c.req.json();
+  const { success } = userSigninZod.safeParse(body);
+
+  if (!success) {
+    return c.json({
+      statusCode: 411,
+      message: "Inputs not correct",
+    });
+  }
   const { username, password } = body;
 
   const prisma = new PrismaClient({
@@ -99,7 +108,16 @@ app.post("/login", async (c) => {
 });
 
 app.post("/signup", async (c) => {
-  const body = await c.req.json();
+  const body: UserSingupDTO = await c.req.json();
+
+  const { success } = userSignupZod.safeParse(body);
+
+  if(!success){
+    return c.json({
+      statusCode: 411,
+      message: "Wrong Inputs"
+    })
+  }
 
   const { name, username, password } = body;
 
