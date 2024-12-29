@@ -5,4 +5,4 @@ export const createPostZod = z.object({
   title: z.string().min(2).max(20).nonempty(),
 });
 
-export type createPostDTO = z.infer<typeof createPostZod>;
+export type CreatePostDTO = z.infer<typeof createPostZod>;

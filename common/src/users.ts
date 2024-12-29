@@ -1,15 +1,15 @@
 import { z } from "zod";
 
 export const userSigninZod = z.object({
-  username: z.string().nonempty(),
-  password: z.string().min(5).nonempty({ message: "Password cannot be empty" }),
+  username: z.string(),
+  password: z.string().min(5),
 });
 
 export const userSignupZod = z.object({
   name: z.string().optional(),
-  username: z.string().nonempty().min(1),
-  password: z.string().min(5).nonempty({ message: "Password cannot be empty" }),
+  username: z.string().min(1),
+  password: z.string().min(5),
 });
 
-export type userSigninDTO = z.infer<typeof userSigninZod>;
-export type userSingupDTO = z.infer<typeof userSignupZod>;
+export type UserSigninDTO = z.infer<typeof userSigninZod>;
+export type UserSingupDTO = z.infer<typeof userSignupZod>;
