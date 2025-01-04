@@ -6,10 +6,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        {/* pass true/false prop in Home component to render either login or signup component */}
-        <Route path="login" element={<Home />} />
-        <Route path="signup" element={<Home />} />
+        <Route path="/" element={<Home isSigin={true} />} />
+        <Route path="login" element={<Home isSigin={true} />} />
+        <Route path="signup" element={<Home isSigin={false} />} />
 
         <Route path="/blog/:id" element={<Blog />} />
       </Routes>
