@@ -161,6 +161,19 @@ app.post("/signup", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
+  const userExists = await prisma.user.findFirst({
+    where: {
+      username,
+    },
+  });
+
+  if (userExists) {
+    return c.json({
+      statusCode: 400,
+      message: "User already exists",
+    });
+  }
+
   const user = await prisma.user.create({
     data: {
       name,
@@ -190,6 +203,7 @@ app.post("/signup", async (c) => {
     ),
     refreshToken: await sign(
       {
+        userID: user?.id,
         username,
       },
       c.env.REFRESH_TOKEN_SECRET
