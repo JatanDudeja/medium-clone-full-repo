@@ -168,10 +168,13 @@ app.post("/signup", async (c) => {
   });
 
   if (userExists) {
-    return c.json({
-      statusCode: 400,
-      message: "User already exists",
-    });
+    return c.json(
+      {
+        statusCode: 400,
+        message: "User already exists",
+      },
+      400
+    );
   }
 
   const user = await prisma.user.create({
