@@ -2,7 +2,12 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, verify } from "hono/jwt";
-import { UserSigninDTO, userSigninZod, userSignupZod, UserSingupDTO } from "@jatan_dudeja/medium-clone";
+import {
+  UserSigninDTO,
+  userSigninZod,
+  userSignupZod,
+  UserSingupDTO,
+} from "@jatan_dudeja/medium-clone";
 
 const app = new Hono<{
   Bindings: {
@@ -82,6 +87,27 @@ app.post("/login", async (c) => {
         console.log("Error while updating refresh token in login api.");
       }
     }
+  } else {
+    refreshToken = await sign(
+      {
+        userID: user?.id,
+        username,
+      },
+      c.env.REFRESH_TOKEN_SECRET
+    );
+
+    try {
+      await prisma?.user?.update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          refreshToken,
+        },
+      });
+    } catch (error) {
+      console.log("Error while updating refresh token in login api.");
+    }
   }
 
   const response = {
@@ -112,11 +138,11 @@ app.post("/signup", async (c) => {
 
   const { success } = userSignupZod.safeParse(body);
 
-  if(!success){
+  if (!success) {
     return c.json({
       statusCode: 411,
-      message: "Wrong Inputs"
-    })
+      message: "Wrong Inputs",
+    });
   }
 
   const { name, username, password } = body;
