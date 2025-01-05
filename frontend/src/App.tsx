@@ -10,7 +10,7 @@ export default function App() {
         <Route path="login" element={<Home isSigin={true} />} />
         <Route path="signup" element={<Home isSigin={false} />} />
 
-        <Route path="/blog/:id" element={<Blog />} />
+        <Route path="/blogs" element={<Blog />} />
       </Routes>
     </BrowserRouter>
   );
