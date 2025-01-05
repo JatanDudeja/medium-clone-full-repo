@@ -38,10 +38,13 @@ app.use("/*", async (c, next) => {
   );
 
   if (!accessToken) {
-    return c.json({
-      statusCode: 401,
-      message: "Unauthorized access",
-    });
+    return c.json(
+      {
+        statusCode: 401,
+        message: "Unauthorized access",
+      },
+      401
+    );
   }
 
   try {
@@ -51,10 +54,13 @@ app.use("/*", async (c, next) => {
     );
 
     if (!isAccessTokenValid) {
-      return c.json({
-        statusCode: 401,
-        message: "Unauthorized Access",
-      });
+      return c.json(
+        {
+          statusCode: 401,
+          message: "Unauthorized Access",
+        },
+        401
+      );
     }
 
     const decodedToken = decode(accessToken);
