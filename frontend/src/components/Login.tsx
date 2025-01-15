@@ -5,14 +5,16 @@ import axios, { AxiosError } from "axios";
 import { UserSigninDTO } from "@jatan_dudeja/medium-clone";
 
 interface LoginResDTO {
-  statusCode: number;
-  message: string;
   data: {
-    username: string;
-    userID: number;
-    accessToken: string;
-    refreshToken: string;
-  };
+    statusCode: number;
+    message: string;
+    data: {
+      username: string;
+      userID: number;
+      accessToken: string;
+      refreshToken: string;
+    };
+  }
 }
 
 export default function Login() {
@@ -30,8 +32,8 @@ export default function Login() {
         password: loginDetails?.password,
       });
 
-      localStorage.setItem("accessToken", loginRes?.data?.accessToken);
-      localStorage.setItem("refreshToken", loginRes?.data?.refreshToken);
+      localStorage.setItem("accessToken", loginRes?.data?.data?.accessToken);
+      localStorage.setItem("refreshToken", loginRes?.data?.data?.refreshToken);
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(">>>signupRes: ", error.response?.data?.message);

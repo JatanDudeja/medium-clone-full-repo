@@ -16,7 +16,7 @@ interface AllBlogsValueDTO {
 export default function Blog() {
   const [tokenDetails, setTokenDetails] = useState({
     accessToken: "",
-    refreshToken: "string",
+    refreshToken: "",
   });
 
   const [allBlogs, setAllBlogs] = useState<AllBlogsValueDTO[] | []>([]);
@@ -27,11 +27,18 @@ export default function Blog() {
     const accessToken = localStorage.getItem("accessToken") || "";
     const refreshToken = localStorage.getItem("refreshToken") || "";
 
-    setTokenDetails({
+    if(!accessToken) {
+      navigate("/login");
+    }
+
+    setTokenDetails((item) => ({
+      ...item,
       accessToken,
       refreshToken,
-    });
+    }));
+  }, []);
 
+  useEffect(() => {
     const getAllBlogs = async () => {
       try {
         if (!tokenDetails?.accessToken) {
@@ -46,7 +53,6 @@ export default function Blog() {
         });
 
         // TODO: add error handling if get all blogs api fails
-        console.log(">>>allBlogsRes: ", allBlogsRes);
         setAllBlogs(allBlogsRes?.data?.data);
       } catch (error) {
         console.log(">>>error: ", error);
@@ -54,8 +60,10 @@ export default function Blog() {
       }
     };
 
-    getAllBlogs();
-  }, []);
+    if (tokenDetails?.accessToken) {
+      getAllBlogs();
+    }
+  }, [navigate, tokenDetails]);
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
