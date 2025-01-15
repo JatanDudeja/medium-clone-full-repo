@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { sign, verify } from "hono/jwt";
+import { sign } from "hono/jwt";
 import {
   UserSigninDTO,
   userSigninZod,
@@ -62,52 +62,25 @@ app.post("/login", async (c) => {
   }
 
   let refreshToken = user?.refreshToken;
+  refreshToken = await sign(
+    {
+      userID: user?.id,
+      username,
+    },
+    c.env.REFRESH_TOKEN_SECRET
+  );
 
-  if (refreshToken) {
-    const isExpired = await verify(refreshToken, c.env.REFRESH_TOKEN_SECRET);
-    if (isExpired) {
-      refreshToken = await sign(
-        {
-          userID: user?.id,
-          username: user?.username,
-        },
-        c.env.ACCESS_TOKEN_SECRET
-      );
-
-      try {
-        await prisma?.user?.update({
-          where: {
-            id: user?.id,
-          },
-          data: {
-            refreshToken,
-          },
-        });
-      } catch (error) {
-        console.log("Error while updating refresh token in login api.");
-      }
-    }
-  } else {
-    refreshToken = await sign(
-      {
-        userID: user?.id,
-        username,
+  try {
+    await prisma?.user?.update({
+      where: {
+        id: user?.id,
       },
-      c.env.REFRESH_TOKEN_SECRET
-    );
-
-    try {
-      await prisma?.user?.update({
-        where: {
-          id: user?.id,
-        },
-        data: {
-          refreshToken,
-        },
-      });
-    } catch (error) {
-      console.log("Error while updating refresh token in login api.");
-    }
+      data: {
+        refreshToken,
+      },
+    });
+  } catch (error) {
+    console.log("Error while updating refresh token in login api.");
   }
 
   const response = {
