@@ -61,8 +61,9 @@ app.post("/", async (c) => {
     );
   }
 
+  let createPost;
   try {
-    await prisma?.blog?.create({
+    createPost = await prisma?.blog?.create({
       data: {
         title,
         description,
@@ -83,6 +84,9 @@ app.post("/", async (c) => {
     {
       statusCode: 201,
       message: "Blog published successfully.",
+      data: {
+        id: createPost?.id,
+      },
     },
     201
   );
