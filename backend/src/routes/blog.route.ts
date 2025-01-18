@@ -97,7 +97,13 @@ app.get("/bulk", async (c) => {
   try {
     allBlogs = await prisma.blog.findMany({
       select: {
-        authorID: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+          }
+        },
         title: true,
         description: true,
         createdAt: true,
@@ -116,7 +122,8 @@ app.get("/bulk", async (c) => {
 
   // Rename authorID to userID
   const transformedBlogs = allBlogs.map((blog) => ({
-    userID: blog.authorID,
+    userID: blog.author?.id,
+    authorUsername: blog.author?.username?.split("@")[0],
     title: blog.title,
     description: blog.description,
     createdAt: blog.createdAt,
