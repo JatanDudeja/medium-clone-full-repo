@@ -102,7 +102,7 @@ app.get("/bulk", async (c) => {
             id: true,
             name: true,
             username: true,
-          }
+          },
         },
         title: true,
         description: true,
@@ -161,6 +161,19 @@ app.get("/:blogID", async (c) => {
     where: {
       id: Number(blogID),
     },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      createdAt: true,
+      author: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+        },
+      },
+    },
   });
 
   return c.json(
@@ -168,11 +181,12 @@ app.get("/:blogID", async (c) => {
       statusCode: 200,
       message: "Blog post fetched successfully",
       data: {
-        title: blog?.title,
-        description: blog?.title,
-        userID: blog?.authorID,
-        createdAt: blog?.createdAt,
         id: blog?.id,
+        title: blog?.title,
+        userID: blog?.author?.id,
+        description: blog?.title,
+        authorName: blog?.author?.username?.split("@")[0],
+        createdAt: blog?.createdAt,
       },
     },
     200
