@@ -188,7 +188,7 @@ app.get("/:blogID", async (c) => {
         id: blog?.id,
         title: blog?.title,
         userID: blog?.author?.id,
-        description: blog?.title,
+        description: blog?.description,
         authorName: blog?.author?.username?.split("@")[0],
         createdAt: blog?.createdAt,
       },

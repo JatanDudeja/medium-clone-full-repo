@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 interface AllBlogsValueDTO {
   id: number;
   userID: number;
-  author: string;
+  authorUsername: string;
   title: string;
   description: string;
   createdAt: Date | string;
@@ -27,7 +27,7 @@ export default function Blog() {
     const accessToken = localStorage.getItem("accessToken") || "";
     const refreshToken = localStorage.getItem("refreshToken") || "";
 
-    if(!accessToken) {
+    if (!accessToken) {
       navigate("/login");
     }
 
@@ -65,23 +65,33 @@ export default function Blog() {
     }
   }, [navigate, tokenDetails]);
 
+  const handleCreateBlog = () => {
+    navigate("/create-blog");
+  };
+
   return (
     <div className="flex flex-col justify-center items-center w-full">
       <div className="flex gap-10 justify-start items-center w-[70%] p-3">
-        <div className="flex justify-center items-center">+</div>
+        <div
+          className="flex justify-center items-center"
+          onClick={handleCreateBlog}
+        >
+          +
+        </div>
         <div className="flex justify-center items-center">For You</div>
         <div className="flex justify-center items-center">Following</div>
       </div>
       <div className="h-[1px] w-[70%] bg-gray-200 mt-2 mb-6"></div>
 
-      {allBlogs?.map((singleBlog) => {
+      {allBlogs?.map((singleBlog, index) => {
         return (
           <BlogComponent
             id={singleBlog?.id}
-            authorName={singleBlog?.author}
+            authorName={singleBlog?.authorUsername}
             blogTitle={singleBlog?.title}
             blogContent={singleBlog?.description}
             createdAt={singleBlog?.createdAt}
+            last={index === allBlogs?.length - 1}
           />
         );
       })}
