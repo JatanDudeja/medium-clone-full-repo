@@ -14,6 +14,14 @@ export default function Signup() {
   });
 
   useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      navigate("/blogs", { replace: true });
+    }
+  }, []);
+
+  useEffect(() => {
     if (Object.values(signinDetails).some((item) => !item)) {
       setResponsePending(true);
     } else {

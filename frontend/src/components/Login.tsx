@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/env";
 import { CustomInput } from "./CustomInput";
 import axios, { AxiosError } from "axios";
 import { UserSigninDTO } from "@jatan_dudeja/medium-clone";
+import { useNavigate } from "react-router-dom";
 
 interface LoginResDTO {
   data: {
@@ -14,7 +15,7 @@ interface LoginResDTO {
       accessToken: string;
       refreshToken: string;
     };
-  }
+  };
 }
 
 export default function Login() {
@@ -22,6 +23,16 @@ export default function Login() {
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      navigate("/blogs", { replace: true });
+    }
+  }, []);
+
+  const navigate = useNavigate();
 
   const handleSignin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -34,9 +45,13 @@ export default function Login() {
 
       localStorage.setItem("accessToken", loginRes?.data?.data?.accessToken);
       localStorage.setItem("refreshToken", loginRes?.data?.data?.refreshToken);
+
+      if (loginRes?.data?.data?.accessToken) {
+        navigate("/blogs", { replace: true });
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(">>>signupRes: ", error.response?.data?.message);
+        console.log(">>>loginRes: ", error.response?.data?.message);
       } else {
         console.error("Unexpected error: ", error);
       }
