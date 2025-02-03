@@ -74,10 +74,13 @@ app.use("/*", async (c, next) => {
     c.set("userID", Number(userID));
     return next();
   } catch (err) {
-    return c.json({
-      statusCode: 401,
-      message: "Invalid or expired token",
-    });
+    return c.json(
+      {
+        statusCode: 401,
+        message: "Invalid or expired token",
+      },
+      401
+    );
   }
 });
 
