@@ -34,7 +34,7 @@ app.post("/", async (c) => {
     return c.json({
       statusCode: 411,
       message: "Wrong Inputss",
-    });
+    }, 411);
   }
 
   const { description, title } = body;
@@ -266,7 +266,7 @@ app.put("/:id", async (c) => {
     statusCode: 200,
     message: "Post edited successfully",
     data: updatedPost,
-  });
+  }, 200);
 });
 
 app.get("/user/:userID", async (c) => {

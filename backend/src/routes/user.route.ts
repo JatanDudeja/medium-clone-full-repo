@@ -27,7 +27,7 @@ app.post("/login", async (c) => {
     return c.json({
       statusCode: 411,
       message: "Inputs not correct",
-    });
+    }, 411);
   }
   const { username, password } = body;
 
@@ -115,7 +115,7 @@ app.post("/signup", async (c) => {
     return c.json({
       statusCode: 411,
       message: "Wrong Inputs",
-    });
+    }, 411);
   }
 
   const { name, username, password } = body;
