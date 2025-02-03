@@ -3,6 +3,7 @@ import BlogComponent from "../components/BlogComponent";
 import axios from "axios";
 import { BASE_URL } from "../utils/env";
 import { useNavigate } from "react-router-dom";
+import Navigation from "../components/Navigation";
 
 interface AllBlogsValueDTO {
   id: number;
@@ -65,23 +66,9 @@ export default function Blog() {
     }
   }, [navigate, tokenDetails]);
 
-  const handleCreateBlog = () => {
-    navigate("/create-blog");
-  };
-
   return (
     <div className="flex flex-col justify-center items-center w-full">
-      <div className="flex gap-10 justify-start items-center w-[70%] p-3">
-        <div
-          className="flex justify-center items-center"
-          onClick={handleCreateBlog}
-        >
-          +
-        </div>
-        <div className="flex justify-center items-center">For You</div>
-        <div className="flex justify-center items-center">Following</div>
-      </div>
-      <div className="h-[1px] w-[70%] bg-gray-200 mt-2 mb-6"></div>
+      <Navigation />
 
       {allBlogs?.map((singleBlog, index) => {
         return (
@@ -92,6 +79,7 @@ export default function Blog() {
             blogContent={singleBlog?.description}
             createdAt={singleBlog?.createdAt}
             last={index === allBlogs?.length - 1}
+            index = {index}
           />
         );
       })}
