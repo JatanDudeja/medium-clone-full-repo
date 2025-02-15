@@ -27,7 +27,6 @@ export default function CreateBlog() {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    console.log(e.target.name, ": ", e.target.value);
     setBlogData((lastValue) => ({
       ...lastValue,
       [e.target.name]: e.target.value,
@@ -56,7 +55,7 @@ export default function CreateBlog() {
       if (!createPostRes) {
         alert("Error while creating post please try again");
       }
-      navigate(`/blog/${createPostRes?.data?.data?.id}`);
+      navigate(`/blogs/${createPostRes?.data?.data?.id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(">>>signupRes: ", error.response?.data?.message);
@@ -67,9 +66,9 @@ export default function CreateBlog() {
   };
 
   return (
-    <div className="flex w-full h-screen justify-center">
-      <div className="flex w-[70%] items-center flex-col h-full">
-        <div className="flex w-[70%] gap-3">
+    <div className="flex w-full h-screen justify-center overflow-hidden">
+      <div className="flex w-full md:w-[70%] items-center flex-col h-full">
+        <div className="flex w-full md:w-[70%] gap-3">
           <div className="w-[1px] h-20 bg-gray-300"></div>
           <input
             className={`p-3 focus:outline-none focus:border-none hover:border-gray-400 w-full h-20 text-3xl`}
@@ -79,7 +78,7 @@ export default function CreateBlog() {
             required
           />
         </div>
-        <div className="flex w-[70%] flex-col justify-start h-full">
+        <div className="flex w-full md:w-[70%] flex-col justify-start h-full">
           <textarea
             className="p-6 focus:outline-none focus:border-none hover:border-gray-400 w-full h-full text-lg resize-none overflow-hidden"
             name="description"
@@ -90,7 +89,7 @@ export default function CreateBlog() {
 
           <div className="flex justify-center items-center p-2">
             <button
-              className={`bg-black h-12 text-white rounded-lg text-md hover:bg-gray-800 mt-5 w-[50%] ${
+              className={`bg-black h-12 text-white rounded-lg text-md hover:bg-gray-800 mt-5 w-full md:w-[50%] ${
                 responsePending && "bg-gray-400 hover:bg-gray-400"
               }`}
               disabled={responsePending}
