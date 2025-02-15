@@ -54,9 +54,9 @@ export default function SingleBlogComponent() {
   return (
     <>
       {singleBlogData ? (
-        <div className="flex justify-center items-center h-screen mt-32">
-          <div className="flex justify-center items-center w-[70%] gap-9 h-screen p-5">
-            <div className="w-full flex flex-col items-start h-screen mt-12 box-border">
+        <div className="flex justify-center items-center h-screen mt-15 w-full">
+          <div className="flex-col flex md:justify-center md:items-center w-full md:w-[70%] gap-5 md:gap-9 h-screen p-5 md:flex-row">
+            <div className="w-full flex flex-col items-start md:h-screen mt-2 md:mt-12">
               <div className="items-center justify-center flex font-bold text-5xl">
                 {singleBlogData?.title}
               </div>
@@ -71,13 +71,15 @@ export default function SingleBlogComponent() {
               </div>
             </div>
 
-            <div className="flex w-[30%] h-screen mt-12">
-              <div className="flex flex-col p-2 gap-y-3">
-                <div>Author</div>
-                <div className="flex items-center justify-center gap-4">
+            <div className="flex md:w-[30%] md:h-screen mt-12 w-full border-2 rounded-lg bg-blue-300 shadow-none">
+              <div className="flex flex-col p-2 md:gap-y-3 w-full">
+                <div className="text-xl md:text-sm font-bold">Author</div>
+                <div className="flex md:items-center md:justify-center gap-4">
                   <div className="rounded-[50%] bg-red-500 h-6 w-6"></div>
                   <div className="flex flex-col">
-                    <div className="text-2xl font-bold">{singleBlogData?.userID}</div>
+                    <div className="text-2xl font-bold">
+                      {singleBlogData?.userID}
+                    </div>
                     <div className="text-gray-400">{""} Author Description</div>
                   </div>
                 </div>

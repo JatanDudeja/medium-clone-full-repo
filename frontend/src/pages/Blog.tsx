@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import BlogComponent from "../components/BlogComponent";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BASE_URL } from "../utils/env";
 import { useNavigate } from "react-router-dom";
-import Navigation from "../components/Navigation";
 
 interface AllBlogsValueDTO {
   id: number;
@@ -28,15 +27,15 @@ export default function Blog() {
     const accessToken = localStorage.getItem("accessToken") || "";
     const refreshToken = localStorage.getItem("refreshToken") || "";
 
-    if (!accessToken) {
-      navigate("/login");
-    }
-
-    setTokenDetails((item) => ({
-      ...item,
-      accessToken,
-      refreshToken,
-    }));
+    setTokenDetails((prev) => {
+      if (
+        prev.accessToken === accessToken &&
+        prev.refreshToken === refreshToken
+      ) {
+        return prev;
+      }
+      return { accessToken, refreshToken };
+    });
   }, []);
 
   useEffect(() => {
@@ -57,6 +56,14 @@ export default function Blog() {
         setAllBlogs(allBlogsRes?.data?.data);
       } catch (error) {
         console.log(">>>error: ", error);
+        if (error instanceof AxiosError) {
+          if (error?.status === 401) {
+            console.log(">>yoyo");
+            navigate("/login");
+          }
+          return;
+        }
+
         return null;
       }
     };
@@ -64,12 +71,10 @@ export default function Blog() {
     if (tokenDetails?.accessToken) {
       getAllBlogs();
     }
-  }, [navigate, tokenDetails]);
+  }, [navigate, tokenDetails?.accessToken]);
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
-      <Navigation />
-
       {allBlogs?.map((singleBlog, index) => {
         return (
           <BlogComponent
@@ -79,7 +84,7 @@ export default function Blog() {
             blogContent={singleBlog?.description}
             createdAt={singleBlog?.createdAt}
             last={index === allBlogs?.length - 1}
-            index = {index}
+            index={index}
           />
         );
       })}

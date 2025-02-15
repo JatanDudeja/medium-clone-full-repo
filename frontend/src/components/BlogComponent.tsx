@@ -18,16 +18,16 @@ export default function BlogComponent({
   blogContent,
   createdAt,
   last,
-  index
+  index,
 }: BlogComponentProps) {
   const navigate = useNavigate();
 
   return (
     <div
       id={id?.toString()}
-      className="w-[70%] flex items-center justify-center flex-col gap-1 text-[14px] mb-5 hover:cursor-pointer"
+      className="w-full px-4 md:p-0 md:w-[70%] flex items-center justify-center flex-col gap-1 text-[14px] mb-5 hover:cursor-pointer"
       onClick={() => {
-        navigate(`/blog/${id}`);
+        navigate(`/blogs/${id}`);
       }}
       key={index}
     >
@@ -42,7 +42,11 @@ export default function BlogComponent({
         <div className="flex justify-center items-center text-black font-bold text-2xl">
           {blogTitle}
         </div>
-        <div className="flex justify-normal items-center text-gray-600">{blogContent?.length > 400 ? (blogContent.slice(0, 314) + "...") : blogContent}</div>
+        <div className="flex justify-normal items-center text-gray-600">
+          {blogContent?.length > 400
+            ? blogContent.slice(0, 314) + "..."
+            : blogContent}
+        </div>
       </div>
       {!last ? (
         <div className="w-full h-[0.5px] bg-gray-300 mt-5 mb-5"></div>
