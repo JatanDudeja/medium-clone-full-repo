@@ -75,7 +75,16 @@ export default function Blog() {
   }, [navigate, tokenDetails?.accessToken]);
 
   if (allBlogs.length === 0) {
-    return <BlogsSkeleton />;
+    return (
+      <>
+        <BlogsSkeleton />
+        <BlogsSkeleton />
+        <BlogsSkeleton />
+        <BlogsSkeleton />
+        <BlogsSkeleton />
+        <BlogsSkeleton />
+      </>
+    );
   }
 
   return (
