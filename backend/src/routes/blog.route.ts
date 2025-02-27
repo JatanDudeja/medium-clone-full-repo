@@ -28,20 +28,16 @@ app.post("/", async (c) => {
 
   const body: CreatePostDTO = await c.req.json();
 
-  console.log(">>>body: ", body)
-
-  // const plainBody = JSON.parse(JSON.stringify(body));
-
   const { success } = createPostZod.safeParse(body);
 
-  console.log(">>>success: ", createPostZod.safeParse(body))
-
-
   if (!success) {
-    return c.json({
-      statusCode: 411,
-      message: "Wrong Inputs",
-    }, 411);
+    return c.json(
+      {
+        statusCode: 411,
+        message: "Wrong Inputs",
+      },
+      411
+    );
   }
 
   const { description, title } = body;
@@ -269,11 +265,14 @@ app.put("/:id", async (c) => {
     );
   }
 
-  return c.json({
-    statusCode: 200,
-    message: "Post edited successfully",
-    data: updatedPost,
-  }, 200);
+  return c.json(
+    {
+      statusCode: 200,
+      message: "Post edited successfully",
+      data: updatedPost,
+    },
+    200
+  );
 });
 
 app.get("/user/:userID", async (c) => {
