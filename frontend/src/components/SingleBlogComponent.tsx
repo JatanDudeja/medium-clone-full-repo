@@ -54,9 +54,9 @@ export default function SingleBlogComponent() {
   return (
     <>
       {singleBlogData ? (
-        <div className="flex justify-center items-center h-screen mt-15 w-full">
-          <div className="flex-col flex md:justify-center md:items-center w-full md:w-[70%] gap-5 md:gap-9 h-screen p-5 md:flex-row">
-            <div className="w-full flex flex-col items-start md:h-screen mt-2 md:mt-12">
+        <div className="flex justify-center items-center h-screen w-full mb-24">
+          <div className="flex-col flex md:justify-center md:items-center w-full md:w-[70%] gap-5 md:gap-9 h-screen p-5 md:flex-row lg:items-start pb-5 md:pb-0">
+            <div className="w-full flex flex-col items-start mt-2 md:mt-12">
               <div className="items-center justify-center flex font-bold text-5xl">
                 {singleBlogData?.title}
               </div>
@@ -66,12 +66,12 @@ export default function SingleBlogComponent() {
                   "dddd, DD MMM YYYY"
                 )}
               </div>
-              <div className="items-center justify-center flex">
+              <div className="flex items-start justify-center h-[500px] overflow-y-auto">
                 {singleBlogData?.description}
               </div>
             </div>
 
-            <div className="flex md:w-[30%] md:h-screen mt-12 w-full border-2 rounded-lg bg-blue-300 shadow-none">
+            <div className="flex md:w-[30%] lg:mt-16 w-full border-2 rounded-lg bg-blue-300 shadow-none h-[180px] md:justify-between">
               <div className="flex flex-col p-2 md:gap-y-3 w-full">
                 <div className="text-xl md:text-sm font-bold">Author</div>
                 <div className="flex md:items-center md:justify-center gap-4">
