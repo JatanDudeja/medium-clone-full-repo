@@ -3,6 +3,7 @@ import BlogComponent from "../components/BlogComponent";
 import axios, { AxiosError } from "axios";
 import { BASE_URL } from "../utils/env";
 import { useNavigate } from "react-router-dom";
+import BlogsSkeleton from "../components/BlogsSkeleton";
 
 interface AllBlogsValueDTO {
   id: number;
@@ -72,6 +73,10 @@ export default function Blog() {
       getAllBlogs();
     }
   }, [navigate, tokenDetails?.accessToken]);
+
+  if (allBlogs.length === 0) {
+    return <BlogsSkeleton />;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center w-full">
